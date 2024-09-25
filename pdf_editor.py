@@ -127,6 +127,6 @@ def _ensure_unique_filename(file_path: Path) -> Path:
     return new_file_path
 
 if __name__ == "__main__":
-    input_folder = "/Users/yvan/Documents/PDT"
-    output_folder = "/Users/yvan/Documents/PDT/output"
+    input_folder = "/path/to/your/input/folder"
+    output_folder = "/path/to/your/output/folder"
     remove_last_page(input_folder, output_folder)
