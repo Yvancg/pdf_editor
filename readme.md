@@ -1,5 +1,5 @@
 
-# PDF Last Page Remover
+# PDF Editor (Last Page Remover)
 
 This Python script processes PDF files in a specified input folder, removes the last page from each PDF, and saves the modified versions in an output folder.
 
@@ -17,40 +17,40 @@ This Python script processes PDF files in a specified input folder, removes the 
 - `PyPDF2`: For reading and writing PDFs.
 - `tqdm`: For displaying a progress bar.
 
-You can install the required dependencies using `pip`:
+You can install the required dependencies using `pip3`:
 
 ```bash
-pip install PyPDF2 tqdm
+pip3 install PyPDF2 tqdm
 ```
 
 ## Usage
 
 ### 1. Clone the repository or download the script
 
-You can either clone this repository or download the `pdf_last_page_remover.py` script to your local machine.
+You can either clone this repository or download the `pdf_editor.py` script to your local machine.
 
 ```bash
-git clone https://github.com/your-repository/pdf-last-page-remover.git
+git clone https://github.com/Yvancg/pdf_editor.git
 ```
 
 ### 2. Set up your input and output folders
 
-- Place your PDF files in the input folder (e.g., `/Users/yvan/Documents/PDT`).
-- The script will save the modified PDFs (with the last page removed) in the output folder (e.g., `/Users/yvan/Documents/PDT/output`).
+- Place your PDF files in the input folder (e.g., `/path/to/your/input/folder`).
+- The script will save the modified PDFs (with the last page removed) in the output folder (e.g., `/path/to/your/output/folder`).
 
 ### 3. Run the script
 
 Run the script by executing the following command:
 
 ```bash
-python pdf_last_page_remover.py
+python pdf_editor.py
 ```
 
 You can modify the `input_folder` and `output_folder` paths inside the script if needed. By default, the script is set to:
 
 ```python
-input_folder = "/Users/yvan/Documents/PDT"
-output_folder = "/Users/yvan/Documents/PDT/output"
+input_folder = "/path/to/your/input/folder"
+output_folder = "/path/to/your/output/folder"
 ```
 
 ### 4. Example folder structure
