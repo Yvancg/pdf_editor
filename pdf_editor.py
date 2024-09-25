@@ -13,6 +13,7 @@ from pathlib import Path
 from PyPDF2 import PdfReader, PdfWriter
 from tqdm import tqdm
 import traceback
+from concurrent.futures import ThreadPoolExecutor
 
 # Setup logging configuration
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -72,13 +73,39 @@ def remove_last_page(input_folder: str, output_folder: str):
 
     # Get list of PDF files
     pdf_files = list(input_folder_path.glob('*.pdf'))
-    
+
     # Setup progress bar
     with tqdm(total=len(pdf_files), desc="Processing PDFs") as pbar:
-        for input_path in pdf_files:
-            output_path = output_folder_path / f"edited_{input_path.name}"
-            process_pdf(input_path, output_path)
-            pbar.update(1)  # Update progress bar regardless of success/failure
+        with ThreadPoolExecutor() as executor:
+            futures = [executor.submit(process_pdf, input_path, output_folder_path / f"edited_{input_path.name}") 
+                       for input_path in pdf_files]
+            for future in futures:
+                future.result()  # Will raise any exception thrown in threads
+                pbar.update(1) # Update progress bar regardless of success/failure
+
+#def remove_last_page(input_folder: str, output_folder: str):
+#    """
+#    Iterate through all PDF files in the input folder and remove the last page.
+
+#    Args:
+#        input_folder (str): Path to the folder containing input PDF files.
+#        output_folder (str): Path to the folder where modified PDFs will be saved.
+#    """
+#    input_folder_path = Path(input_folder)
+#    output_folder_path = Path(output_folder)
+
+#    # Create the output folder if it doesn't exist
+#    output_folder_path.mkdir(parents=True, exist_ok=True)
+
+#    # Get list of PDF files
+#    pdf_files = list(input_folder_path.glob('*.pdf'))
+    
+#    # Setup progress bar
+#    with tqdm(total=len(pdf_files), desc="Processing PDFs") as pbar:
+#        for input_path in pdf_files:
+#            output_path = output_folder_path / f"edited_{input_path.name}"
+#            process_pdf(input_path, output_path)
+#            pbar.update(1)  # Update progress bar regardless of success/failure
 
     logging.info("All PDF files have been processed.")
 
