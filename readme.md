@@ -57,7 +57,7 @@ output_folder = "/path/to/your/output/folder"
 
 ```
 Documents/
-    PDT/
+    PDF/
         input/
             file1.pdf
             file2.pdf
