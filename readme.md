@@ -1,71 +1,111 @@
+
 # PDF Last Page Remover
 
-This Python script allows you to bulk edit PDF files in a specific folder by removing the last page of each PDF and saving the modified versions.
+This Python script processes PDF files in a specified input folder, removes the last page from each PDF, and saves the modified versions in an output folder.
 
 ## Features
 
-- Processes all PDF files in a specified input folder
-- Removes the last page from each PDF
-- Saves modified PDFs in a specified output folder
-- Prefixes modified files with "edited_"
+- **Batch Processing**: Processes all PDF files in a folder.
+- **Page Removal**: Removes only the last page of each PDF.
+- **Progress Bar**: Provides real-time feedback on the progress of the operation using `tqdm`.
+- **Logging**: Logs information about the files processed and any warnings or errors encountered.
+- **Parallel Processing**: Uses multi-threading to process multiple PDFs concurrently for better performance.
 
 ## Requirements
 
-- Python 3.6+
-- PyPDF2 library
+- Python 3.7+
+- `PyPDF2`: For reading and writing PDFs.
+- `tqdm`: For displaying a progress bar.
 
-## Installation
+You can install the required dependencies using `pip`:
 
-1. Clone this repository:
-   ```
-   git clone https://github.com/YOUR_USERNAME/pdf_editor.git
-   cd pdf_editor
-   ```
-
-2. Create a virtual environment:
-   ```
-   python3 -m venv venv
-   ```
-
-3. Activate the virtual environment:
-   - On macOS and Linux:
-     ```
-     source venv/bin/activate
-     ```
-   - On Windows:
-     ```
-     venv\Scripts\activate
-     ```
-
-4. Install the required packages:
-   ```
-   pip install -r requirements.txt
-   ```
+```bash
+pip install PyPDF2 tqdm
+```
 
 ## Usage
 
-1. Open `pdf_editor.py` in a text editor.
+### 1. Clone the repository or download the script
 
-2. Update the `input_folder` and `output_folder` variables with the appropriate paths:
-   ```python
-   input_folder = "/path/to/your/input/folder"
-   output_folder = "/path/to/your/output/folder"
-   ```
+You can either clone this repository or download the `pdf_last_page_remover.py` script to your local machine.
 
-3. Run the script:
-   ```
-   python pdf_editor.py
-   ```
+```bash
+git clone https://github.com/your-repository/pdf-last-page-remover.git
+```
 
-The script will process all PDF files in the input folder, remove the last page from each, and save the modified versions in the output folder with "edited_" prefixed to the original filename.
+### 2. Set up your input and output folders
 
-## Contributing
+- Place your PDF files in the input folder (e.g., `/Users/yvan/Documents/PDT`).
+- The script will save the modified PDFs (with the last page removed) in the output folder (e.g., `/Users/yvan/Documents/PDT/output`).
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+### 3. Run the script
+
+Run the script by executing the following command:
+
+```bash
+python pdf_last_page_remover.py
+```
+
+You can modify the `input_folder` and `output_folder` paths inside the script if needed. By default, the script is set to:
+
+```python
+input_folder = "/Users/yvan/Documents/PDT"
+output_folder = "/Users/yvan/Documents/PDT/output"
+```
+
+### 4. Example folder structure
+
+```
+Documents/
+    PDT/
+        input/
+            file1.pdf
+            file2.pdf
+        output/
+```
+
+- All original PDFs should be placed in the `input/` folder.
+- After processing, the modified PDFs will be saved in the `output/` folder, with `edited_` prefixed to the filename (e.g., `edited_file1.pdf`).
+
+## Code Overview
+
+The script consists of several key functions, each serving a specific purpose:
+
+### 1. `process_pdf(input_path: Path, output_path: Path) -> bool`
+
+- This function reads a PDF from the input path and removes its last page.
+- It uses the `PdfReader` and `PdfWriter` classes from the `PyPDF2` library.
+- If the PDF has fewer than two pages, it logs a warning and skips the file.
+- Ensures the output file does not overwrite an existing file by calling `_ensure_unique_filename()`.
+
+### 2. `remove_last_page(input_folder: str, output_folder: str)`
+
+- The main function that orchestrates the removal of the last page from all PDFs in the input folder.
+- Uses a progress bar (`tqdm`) for visual feedback on the processing status.
+- Files are processed in parallel using Python’s `ThreadPoolExecutor` for improved performance.
+
+### 3. `_ensure_unique_filename(file_path: Path) -> Path`
+
+- This helper function ensures that if a file with the same name already exists in the output folder, it appends a number to the file name to avoid overwriting.
+- The function checks if the file exists and iteratively appends a counter (e.g., `_1`, `_2`) to the file name.
+
+### 4. Logging and Error Handling
+
+- The script uses Python’s `logging` module for tracking events, warnings, and errors.
+- In case of an exception, it logs the full traceback using `logging.exception()` for easier debugging.
+
+### 5. Parallel Processing
+
+- The `ThreadPoolExecutor` is used to process PDFs concurrently, which is beneficial when handling a large number of files.
+- The results of the threads are monitored to ensure that any exceptions are raised and logged.
+
+## Contributions
+
+Feel free to submit pull requests, report issues, or request additional features!
 
 ## License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgements
 
